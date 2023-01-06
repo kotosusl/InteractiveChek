@@ -4,6 +4,11 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
 import csv
 
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Ui_MainWindow(QMainWindow):
     def setupUi(self, MainWindow):
@@ -76,7 +81,8 @@ class Check(Ui_MainWindow):
             reader = csv.reader(csvfile, delimiter=';', quotechar='"')
             for i, row in enumerate(reader):
                 if i != 0:
-                    summa += int(row[2]) * int(row[1])
+                    if int(row[2]) >= 0:
+                        summa += int(row[2]) * int(row[1])
         self.total.setText(str(summa))
 
     def loadTable(self, table_name):
